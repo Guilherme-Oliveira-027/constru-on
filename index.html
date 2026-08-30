@@ -1,86 +1,167 @@
 <!doctype html>
 <html lang="pt-br">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>ConstruOn - Pedreiros e Ajudantes (Aracruz)</title>
-  <link rel="stylesheet" href="/styles.css">
-</head>
-<body>
-  <header>
-    <h1>ConstruOn — Pedreiros, Ajudantes e Empreiteiras</h1>
-    <p>Região: Aracruz, Barra do Riacho, Vila do Riacho, Barra do Sahy</p>
-  </header>
-
-  <main>
-    <section class="search">
-      <input id="q" placeholder="Pesquisar por nome, contato ou especialidade" />
-      <select id="role">
-        <option value="">Todas as funções</option>
-        <option value="pedreiro">Pedreiro</option>
-        <option value="ajudante">Ajudante</option>
-        <option value="empreiteira">Empreiteira</option>
-      </select>
-      <select id="region">
-        <option value="">Todas as regiões</option>
-      </select>
-      <button id="searchBtn">Buscar</button>
-    </section>
-
-    <section class="results" id="results"></section>
-
-    <hr />
-
-    <section class="forms">
-      <h2>Cadastre-se</h2>
-      <div class="tabs">
-        <button data-role="pedreiro" class="tab active">Pedreiro</button>
-        <button data-role="ajudante" class="tab">Ajudante</button>
-        <button data-role="empreiteira" class="tab">Empreiteira</button>
-      </div>
-
-      <form id="form" onsubmit="return false;">
-        <input type="hidden" id="formRole" value="pedreiro" />
-        <label>Nome: <input id="name" required /></label>
-        <label>Contato: <input id="contact" required /></label>
-        <label>Região: <input id="regionInput" placeholder="Ex: Barra do Riacho" /></label>
-
-        <div id="pedreiroFields">
-          <label>Valor da diária (R$): <input id="daily_rate" type="number" step="0.01" /></label>
-          <label>Disponibilidade: <input id="availability" placeholder="Ex: imediato, flexível" /></label>
-          <fieldset>
-            <legend>Especialidades</legend>
-            <label><input type="checkbox" name="specialty" value="alvenaria" /> Alvenaria</label>
-            <label><input type="checkbox" name="specialty" value="acabamento" /> Acabamento</label>
-            <label><input type="checkbox" name="specialty" value="piso" /> Piso</label>
-            <label><input type="checkbox" name="specialty" value="pintura" /> Pintura</label>
-            <label><input type="checkbox" name="specialty" value="eletrica" /> Elétrica</label>
-            <label><input type="checkbox" name="specialty" value="outra" /> Outra: <input id="specialty_other" placeholder="especificar" /></label>
-          </fieldset>
-          <label>Tempo de experiência (anos): <input id="experience_years" type="number" min="0" step="1" /></label>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>ConstruOn - Pedreiros e Ajudantes (Aracruz)</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand-mark">C</span>
+          <div>
+            <p class="eyebrow">Conexão local</p>
+            <h1>ConstruOn</h1>
+          </div>
         </div>
+        <div class="status-pill">Aracruz • Barra do Riacho • Vila do Riacho • Barra do Sahy</div>
+      </header>
 
-        <div id="ajudanteFields" style="display:none">
-          <label>Idade: <input id="age" type="number" /></label>
-          <label>Tempo de experiência (anos): <input id="experience" /></label>
-        </div>
+      <main class="content">
+        <section class="search-panel panel">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow accent">Procure profissionais</p>
+              <h2>Encontre o perfil ideal</h2>
+            </div>
+          </div>
 
-        <div id="empreiteiraFields" style="display:none">
-          <label>Site da empresa: <input id="company_site" /></label>
-          <label>Nº de funcionários: <input id="employees_count" type="number" /></label>
-          <label>Tempo de empresa (anos): <input id="company_age" type="number" /></label>
-        </div>
+          <div class="search">
+            <input id="q" placeholder="Pesquisar por nome, contato ou especialidade" />
+            <select id="role">
+              <option value="">Todas as funções</option>
+              <option value="pedreiro">Pedreiro</option>
+              <option value="ajudante">Ajudante</option>
+              <option value="empreiteira">Empreiteira</option>
+            </select>
+            <select id="region">
+              <option value="">Todas as regiões</option>
+            </select>
+            <button id="searchBtn">Buscar</button>
+          </div>
+        </section>
 
-        <div id="photosSection">
-          <label>Fotos dos serviços: <input id="photos" type="file" accept="image/*" multiple /></label>
-          <div id="photoPreview" class="photo-preview"></div>
-        </div>
+        <section class="results-panel panel">
+          <div class="section-header compact">
+            <div>
+              <p class="eyebrow accent">Resultados</p>
+              <h2>Perfis disponíveis</h2>
+            </div>
+          </div>
+          <div class="results" id="results"></div>
+        </section>
 
-        <button id="submitBtn">Enviar cadastro</button>
-      </form>
-    </section>
-  </main>
+        <section class="forms panel">
+          <div class="section-header compact">
+            <div>
+              <p class="eyebrow accent">Cadastro</p>
+              <h2>Cadastre-se</h2>
+            </div>
+          </div>
 
-  <script src="/app.js"></script>
-</body>
+          <div class="tabs" aria-label="Selecionar categoria">
+            <button type="button" data-role="pedreiro" class="tab active">Pedreiro</button>
+            <button type="button" data-role="ajudante" class="tab">Ajudante</button>
+            <button type="button" data-role="empreiteira" class="tab">Empreiteira</button>
+          </div>
+
+          <form id="form" onsubmit="return false;">
+            <input type="hidden" id="formRole" value="pedreiro" />
+
+            <div class="form-grid">
+              <label>
+                Nome
+                <input id="name" required />
+              </label>
+              <label>
+                Contato
+                <input id="contact" required />
+              </label>
+              <label class="full-width">
+                Região
+                <input id="regionInput" placeholder="Ex: Barra do Riacho" />
+              </label>
+            </div>
+
+            <div id="pedreiroFields">
+              <div class="form-grid">
+                <label>
+                  Valor da diária (R$)
+                  <input id="daily_rate" type="number" step="0.01" />
+                </label>
+                <label>
+                  Disponibilidade
+                  <input id="availability" placeholder="Ex: imediato, flexível" />
+                </label>
+              </div>
+
+              <fieldset>
+                <legend>Especialidades</legend>
+                <div class="check-grid">
+                  <label><input type="checkbox" name="specialty" value="alvenaria" /> Alvenaria</label>
+                  <label><input type="checkbox" name="specialty" value="acabamento" /> Acabamento</label>
+                  <label><input type="checkbox" name="specialty" value="piso" /> Piso</label>
+                  <label><input type="checkbox" name="specialty" value="pintura" /> Pintura</label>
+                  <label><input type="checkbox" name="specialty" value="eletrica" /> Elétrica</label>
+                  <label class="other-specialty">
+                    <span>Outra:</span>
+                    <input id="specialty_other" placeholder="especificar" />
+                  </label>
+                </div>
+              </fieldset>
+
+              <label>
+                Tempo de experiência (anos)
+                <input id="experience_years" type="number" min="0" step="1" />
+              </label>
+            </div>
+
+            <div id="ajudanteFields" style="display:none">
+              <div class="form-grid">
+                <label>
+                  Idade
+                  <input id="age" type="number" />
+                </label>
+                <label>
+                  Tempo de experiência (anos)
+                  <input id="experience" />
+                </label>
+              </div>
+            </div>
+
+            <div id="empreiteiraFields" style="display:none">
+              <div class="form-grid">
+                <label>
+                  Site da empresa
+                  <input id="company_site" />
+                </label>
+                <label>
+                  Nº de funcionários
+                  <input id="employees_count" type="number" />
+                </label>
+                <label>
+                  Tempo de empresa (anos)
+                  <input id="company_age" type="number" />
+                </label>
+              </div>
+            </div>
+
+            <div id="photosSection" class="photos-section">
+              <label>
+                Fotos dos serviços
+                <input id="photos" type="file" accept="image/*" multiple />
+              </label>
+              <div id="photoPreview" class="photo-preview"></div>
+            </div>
+
+            <button id="submitBtn" class="submit-btn" type="button">Enviar cadastro</button>
+          </form>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
 </html>

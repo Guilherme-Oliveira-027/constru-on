@@ -148,6 +148,30 @@
               </div>
             </div>
 
+            <div class="schedule-section">
+              <div class="section-header compact">
+                <div>
+                  <p class="eyebrow accent">Agendamento</p>
+                  <h3>Agendar orçamento</h3>
+                </div>
+              </div>
+
+              <div class="form-grid">
+                <label>
+                  Data do orçamento
+                  <input id="budget_date" type="date" />
+                </label>
+                <label>
+                  Horário desejado
+                  <input id="budget_time" type="time" />
+                </label>
+                <label class="full-width">
+                  Observações do serviço
+                  <textarea id="budget_notes" rows="3" placeholder="Descreva o serviço, local e prazo estimado"></textarea>
+                </label>
+              </div>
+            </div>
+
             <div id="photosSection" class="photos-section">
               <label>
                 Fotos dos serviços
@@ -160,6 +184,34 @@
           </form>
         </section>
       </main>
+    </div>
+
+    <div id="scheduleModal" class="schedule-modal hidden" aria-hidden="true">
+      <div class="schedule-modal-card">
+        <button type="button" class="close-modal" id="closeScheduleModal" aria-label="Fechar agendamento">×</button>
+        <p class="eyebrow accent">Agendar orçamento</p>
+        <h3 id="scheduleTitle">Agendar com profissional</h3>
+
+        <form id="scheduleForm">
+          <label>
+            Seu nome
+            <input id="scheduleCustomerName" required />
+          </label>
+          <label>
+            Data
+            <input id="scheduleDate" type="date" required />
+          </label>
+          <label>
+            Horário
+            <input id="scheduleTime" type="time" required />
+          </label>
+          <label>
+            Detalhes do serviço
+            <textarea id="scheduleNotes" rows="3" placeholder="Descreva a necessidade e o tipo de serviço"></textarea>
+          </label>
+          <button type="submit" class="submit-btn">Confirmar agendamento</button>
+        </form>
+      </div>
     </div>
 
     <script src="app.js"></script>

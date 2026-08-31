@@ -18,6 +18,35 @@ function saveListings(list){
   localStorage.setItem('construon_listings', JSON.stringify(list));
 }
 
+function getSchedules(){
+  try{
+    const raw = localStorage.getItem('construon_schedules');
+    return raw ? JSON.parse(raw) : [];
+  }catch(e){ return []; }
+}
+
+function saveSchedules(list){
+  localStorage.setItem('construon_schedules', JSON.stringify(list));
+}
+
+function openScheduleModal(name, contact) {
+  const modal = document.getElementById('scheduleModal');
+  const title = document.getElementById('scheduleTitle');
+  title.textContent = `Agendar com ${name}`;
+  modal.dataset.professional = name;
+  modal.dataset.contact = contact;
+  modal.classList.remove('hidden');
+  modal.setAttribute('aria-hidden', 'false');
+  document.getElementById('scheduleCustomerName').focus();
+}
+
+function closeScheduleModal(){
+  const modal = document.getElementById('scheduleModal');
+  modal.classList.add('hidden');
+  modal.setAttribute('aria-hidden', 'true');
+  document.getElementById('scheduleForm').reset();
+}
+
 function search(){
   const q = document.getElementById('q').value.toLowerCase();
   const role = document.getElementById('role').value;
@@ -37,12 +66,23 @@ function search(){
   if(!filtered.length){ results.textContent = 'Nenhum resultado'; return; }
   filtered.forEach(item => {
     const el = document.createElement('div'); el.className='card';
+    const scheduleInfo = item.schedule ? 
+      `<p><strong>Agendamento:</strong> ${item.schedule.date || 'Data a combinar'} ${item.schedule.time ? `às ${item.schedule.time}` : ''}${item.schedule.notes ? ` • ${item.schedule.notes}` : ''}</p>` : '';
     el.innerHTML = `<h3>${item.name} — ${item.role}</h3>
       <p><strong>Contato:</strong> ${item.contact}</p>
       <p><strong>Região:</strong> ${item.region||''}</p>
       <p><strong>Especialidades:</strong> ${item.specialties ? item.specialties.join(', ') : '-'}</p>
       <p><strong>Diária:</strong> ${item.daily_rate? 'R$ '+item.daily_rate : '-'}</p>
+      ${scheduleInfo}
       <p><small>Publicado: ${new Date(item.created_at).toLocaleString()}</small></p>`;
+    const actions = document.createElement('div'); actions.className = 'card-actions';
+    const scheduleBtn = document.createElement('button');
+    scheduleBtn.type = 'button';
+    scheduleBtn.className = 'secondary-btn';
+    scheduleBtn.textContent = 'Agendar orçamento';
+    scheduleBtn.addEventListener('click', () => openScheduleModal(item.name, item.contact));
+    actions.appendChild(scheduleBtn);
+    el.appendChild(actions);
     // fotos (se houver)
     if(item.photos && item.photos.length){
       const photosDiv = document.createElement('div'); photosDiv.className = 'photos';
@@ -75,6 +115,42 @@ document.addEventListener('DOMContentLoaded', ()=>{
   loadRegions();
   document.getElementById('searchBtn').addEventListener('click', search);
   document.querySelectorAll('.tab').forEach(b=> b.addEventListener('click', ()=> setTab(b.dataset.role)));
+  document.getElementById('closeScheduleModal').addEventListener('click', closeScheduleModal);
+
+  document.getElementById('scheduleModal').addEventListener('click', (event) => {
+    if(event.target && event.target.id === 'scheduleModal') closeScheduleModal();
+  });
+
+  document.getElementById('scheduleForm').addEventListener('submit', (event) => {
+    event.preventDefault();
+    const modal = document.getElementById('scheduleModal');
+    const professional = modal.dataset.professional || 'profissional';
+    const contact = modal.dataset.contact || '';
+    const customerName = document.getElementById('scheduleCustomerName').value.trim();
+    const date = document.getElementById('scheduleDate').value;
+    const time = document.getElementById('scheduleTime').value;
+    const notes = document.getElementById('scheduleNotes').value.trim();
+
+    if(!customerName || !date || !time){
+      alert('Preencha nome, data e horário para confirmar o agendamento.');
+      return;
+    }
+
+    const schedules = getSchedules();
+    schedules.unshift({
+      professional,
+      contact,
+      customerName,
+      date,
+      time,
+      notes,
+      created_at: new Date().toISOString()
+    });
+    saveSchedules(schedules);
+    closeScheduleModal();
+    alert(`Agendamento confirmado com ${professional} para ${date} às ${time}.`);
+  });
+
   document.getElementById('submitBtn').addEventListener('click', async ()=>{
     const role = document.getElementById('formRole').value;
     const name = document.getElementById('name').value.trim();
@@ -82,6 +158,12 @@ document.addEventListener('DOMContentLoaded', ()=>{
     const region = document.getElementById('regionInput').value.trim();
     if(!name || !contact){ alert('Nome e contato são obrigatórios'); return; }
     const payload = { role, name, contact, region };
+    const budgetDate = document.getElementById('budget_date').value;
+    const budgetTime = document.getElementById('budget_time').value;
+    const budgetNotes = document.getElementById('budget_notes').value.trim();
+    if(budgetDate || budgetTime || budgetNotes){
+      payload.schedule = { date: budgetDate, time: budgetTime, notes: budgetNotes };
+    }
     if(role==='pedreiro'){
       payload.daily_rate = document.getElementById('daily_rate').value;
       payload.availability = document.getElementById('availability').value;

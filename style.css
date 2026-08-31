@@ -352,6 +352,80 @@ legend {
   border: 1px solid var(--border);
 }
 
+.schedule-section {
+  display: grid;
+  gap: 14px;
+  background: rgba(248, 250, 252, 0.8);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.card-actions {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 14px;
+}
+
+.secondary-btn {
+  border: 1px solid rgba(255, 122, 0, 0.3);
+  background: var(--primary-soft);
+  color: var(--primary-dark);
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.secondary-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.02);
+}
+
+.schedule-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.5);
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  z-index: 50;
+}
+
+.schedule-modal.hidden {
+  display: none;
+}
+
+.schedule-modal-card {
+  position: relative;
+  width: min(560px, 100%);
+  background: #fff;
+  border-radius: 22px;
+  box-shadow: 0 26px 60px rgba(15, 23, 42, 0.2);
+  padding: 24px;
+}
+
+.close-modal {
+  position: absolute;
+  right: 14px;
+  top: 12px;
+  width: 34px;
+  height: 34px;
+  border: none;
+  background: #f8fafc;
+  border-radius: 50%;
+  font-size: 1.4rem;
+  cursor: pointer;
+  color: var(--text);
+}
+
+#scheduleForm {
+  display: grid;
+  gap: 14px;
+  margin-top: 12px;
+}
+
 @media (max-width: 820px) {
   .topbar,
   .search {
